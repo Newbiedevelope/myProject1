@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "users")
 public class User {
 
     @Id
@@ -15,7 +16,7 @@ public class User {
     private Long id;        // 로그인과 연관 없는 DB 용 내부 식별자
 
     @Column(unique = true, nullable = false)
-    private String userName; // 사용자의 로그인 용 ID
+    private String username; // 사용자의 로그인 용 ID
 
     @Column(nullable = false)
     private String password;
@@ -24,10 +25,18 @@ public class User {
     private String nickname;    // 표시용 사용자명(중복 가능)
 
     // create
-    public User(String userName, String nickname, String password) {
-        this.userName = userName;
-        this.nickname = nickname;
+    public User(String username, String password, String nickname) {
+        this.username = username;
         this.password = password;
+        this.nickname = nickname;
+    }
+
+    public static User create(String username, String password, String nickname) {
+        User user = new User();
+        user.username = username;
+        user.password = password;
+        user.nickname = nickname;
+        return user;
     }
 
 }

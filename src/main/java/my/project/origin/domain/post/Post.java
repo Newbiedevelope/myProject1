@@ -34,4 +34,13 @@ public class Post {
         this.user = user;
         this.category = category;
     }
+
+    public static Post create(String title, String content, User user, Category category) {
+        Post post = new Post();
+        post.title = title;
+        post.content = content;
+        post.user = user;
+        post.category = category;
+        return post;
+    }
 }
