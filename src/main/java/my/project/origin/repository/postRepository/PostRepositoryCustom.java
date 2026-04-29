@@ -1,6 +1,7 @@
 package my.project.origin.repository.postRepository;
 
 import my.project.origin.domain.post.Post;
+import my.project.origin.dto.post.PostResponse;
 import my.project.origin.dto.post.PostSearchCondition;
 
 import java.util.List;

@@ -9,7 +9,7 @@ public class PostCreateRequest {
 
     private String title;
     private String content;
-    private String username;
+    private Long userId;
     private Long categoryId;
 
 }

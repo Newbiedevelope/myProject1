@@ -17,6 +17,11 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Long createCategory(CategoryCreateRequest request) {
 
+        categoryRepository.findByName(request.getName())
+                .ifPresent(c -> {
+                    throw new IllegalArgumentException("이미 존재하는 카테고리입니다.");
+                });
+
         Category category = Category.create(request.getName());
 
         return categoryRepository.save(category).getId();
