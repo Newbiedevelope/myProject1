@@ -7,7 +7,6 @@ import my.project.origin.domain.category.QCategory;
 import my.project.origin.domain.post.Post;
 import my.project.origin.domain.post.QPost;
 import my.project.origin.domain.user.QUser;
-import my.project.origin.dto.post.PostResponse;
 import my.project.origin.dto.post.PostSearchCondition;
 import org.springframework.stereotype.Repository;
 

@@ -1,26 +1,23 @@
 package my.project.origin.controller;
 
 import lombok.RequiredArgsConstructor;
-import my.project.origin.domain.post.Post;
-import my.project.origin.dto.post.PostCreateRequest;
-import my.project.origin.dto.post.PostCreateResponse;
-import my.project.origin.dto.post.PostResponse;
-import my.project.origin.dto.post.PostSearchCondition;
+import my.project.origin.dto.post.*;
 import my.project.origin.service.postService.PostService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 public class PostController {
 
     private final PostService postService;
 
     // 검색 컨트롤러
     @GetMapping("/search")
-    public List<PostResponse> search(PostSearchCondition condition) {
+    public List<PostListResponse> search(PostSearchCondition condition) {
         return postService.search(condition);
     }
 
@@ -33,13 +30,13 @@ public class PostController {
 
     // 단일 조회 컨트롤러
     @GetMapping("/{postId}")
-    public PostResponse getPost(@PathVariable Long postId) {
+    public PostDetailResponse getPost(@PathVariable Long postId) {
         return postService.getPost(postId);
     }
 
     // 다중 조회 컨트롤러
     @GetMapping
-    public List<PostResponse> getPosts() {
+    public List<PostListResponse> getPosts() {
         return postService.getPosts();
     }
 

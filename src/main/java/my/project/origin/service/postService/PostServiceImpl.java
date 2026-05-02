@@ -5,7 +5,8 @@ import my.project.origin.domain.category.Category;
 import my.project.origin.domain.post.Post;
 import my.project.origin.domain.user.User;
 import my.project.origin.dto.post.PostCreateRequest;
-import my.project.origin.dto.post.PostResponse;
+import my.project.origin.dto.post.PostDetailResponse;
+import my.project.origin.dto.post.PostListResponse;
 import my.project.origin.dto.post.PostSearchCondition;
 import my.project.origin.repository.catogoryRepository.CategoryRepository;
 import my.project.origin.repository.postRepository.PostRepository;
@@ -26,14 +27,15 @@ public class PostServiceImpl implements PostService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<PostResponse> search(PostSearchCondition condition) {
+    public List<PostListResponse> search(PostSearchCondition condition) {
         return postRepository.search(condition).stream()
-                .map(post -> new PostResponse(
+                .map(post -> new PostListResponse(
                         post.getId()
                         , post.getTitle()
                         , post.getContent()
                         , post.getUser().getNickname()
                         , post.getCategory().getName()
+                        , post.getCreatedAt()
                 ))
                 .toList();
     }//close search()
@@ -65,32 +67,34 @@ public class PostServiceImpl implements PostService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<PostResponse> getPosts() {
+    public List<PostListResponse> getPosts() {
 
         return postRepository.findAll().stream()
-                .map(post -> new PostResponse(
+                .map(post -> new PostListResponse(
                         post.getId()
                         , post.getTitle()
                         , post.getContent()
                         , post.getUser().getNickname()
                         , post.getCategory().getName()
+                        , post.getCreatedAt()
                 ))
                 .toList();
 
     }//close getPosts() - 다중 조회
 
     @Override
-    public PostResponse getPost(Long postId) {
+    public PostDetailResponse getPost(Long postId) {
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
-        return new PostResponse(
+        return new PostDetailResponse(
                 post.getId()
                 , post.getTitle()
-                , post.getContent()
                 , post.getUser().getNickname()
                 , post.getCategory().getName()
+                , post.getCreatedAt()
+                , post.getUpdatedAt()
         );
     }//close getPost() - 단일 조회
 }
