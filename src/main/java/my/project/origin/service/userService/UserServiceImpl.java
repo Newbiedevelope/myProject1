@@ -24,4 +24,23 @@ public class UserServiceImpl implements UserService{
 
         return userRepository.save(user).getId();
     }//close createUser()
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public User login(String username, String password) {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("아이디 없음"));
+
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비밀번호 불일치");
+        }
+
+        return user;
+    }
 }

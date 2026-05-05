@@ -91,6 +91,7 @@ public class PostServiceImpl implements PostService{
         return new PostDetailResponse(
                 post.getId()
                 , post.getTitle()
+                , post.getContent()
                 , post.getUser().getNickname()
                 , post.getCategory().getName()
                 , post.getCreatedAt()

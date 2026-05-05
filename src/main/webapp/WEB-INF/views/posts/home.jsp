@@ -364,7 +364,7 @@
           <c:choose>
             <c:when test="${not empty postList}">
               <c:forEach var="post" items="${postList}" varStatus="st">
-                <tr>
+                <tr onclick="location.href='posts/${post.postId}'">
                   <!-- 글번호 -->
                   <td class="td-id col-id">${post.postId}</td>
 

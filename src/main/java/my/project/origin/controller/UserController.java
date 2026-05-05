@@ -1,13 +1,15 @@
 package my.project.origin.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import my.project.origin.domain.user.User;
+import my.project.origin.dto.user.LoginRequest;
 import my.project.origin.dto.user.UserCreateRequest;
 import my.project.origin.dto.user.UserCreateResponse;
 import my.project.origin.service.userService.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,4 +24,26 @@ public class UserController {
         return new UserCreateResponse(userId);
     }
 
+    @GetMapping("/check-username")
+    public Map<String, Boolean> checkUsername(@RequestParam String username) {
+        boolean exists = userService.existsByUsername(username);
+
+        return Map.of("available", !exists);
+    }
+
+    @PostMapping("/login")
+    public String login(
+            LoginRequest request,
+            HttpSession session
+    ) {
+
+        User user = userService.login(
+                request.getUsername(),
+                request.getPassword()
+        );
+
+        session.setAttribute("LOGIN_USER", user.getId());
+
+        return "redirect:/posts";
+    }
 }
