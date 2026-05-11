@@ -300,12 +300,7 @@
       animation: fadeUp 0.4s ease both;
     }
 
-    /* stagger each row */
-    <c:forEach var="post" items="${postList}" varStatus="st">
-    tbody tr:nth-child(${st.count}) {
-      animation-delay: ${0.05 * st.count}s;
-    }
-    </c:forEach>
+
 
     /* ── Footer ── */
     footer {
@@ -324,6 +319,88 @@
       .col-category, .col-date { display: none; }
       main { margin: 32px auto; }
     }
+
+    .main-layout {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+    }
+
+    .content-area {
+        flex: 1;
+    }
+
+    .side-menu {
+        width: 240px;
+
+        background: rgba(255,255,255,.82);
+
+        backdrop-filter: blur(12px);
+
+        border: 1px solid rgba(255,255,255,.3);
+
+        border-radius: 24px;
+
+        padding: 24px;
+
+        box-shadow:
+            0 10px 30px rgba(0,0,0,.08);
+
+        position: sticky;
+        top: 30px;
+    }
+
+    .profile-box {
+        margin-bottom: 24px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(0,0,0,.08);
+    }
+
+    .profile-title {
+        font-size: 12px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin-bottom: 8px;
+    }
+
+    .profile-nickname {
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .menu-btn {
+        width: 100%;
+        margin-bottom: 12px;
+
+        border: none;
+        border-radius: 14px;
+
+        padding: 14px;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        background: linear-gradient(
+            135deg,
+            #c8a96e,
+            #a8893e
+        );
+
+        color: white;
+
+        transition: .2s;
+    }
+
+    .menu-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .logout-btn {
+        background: #b84d4d;
+    }
   </style>
 </head>
 <body>
@@ -336,95 +413,272 @@
   </header>
 
   <!-- ===================== MAIN ===================== -->
-  <main>
-    <div class="section-header">
-      <span class="section-title">게시글 목록</span>
-      <span class="section-count">
-        Total
-        <c:choose>
-          <c:when test="${not empty postList}">${fn:length(postList)}</c:when>
-          <c:otherwise>0</c:otherwise>
-        </c:choose>
-        posts
-      </span>
-    </div>
+  <main class="main-layout">
 
-    <div class="board-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th class="col-id">   No.       </th>
-            <th class="col-category"> Category  </th>
-            <th class="col-title">   Title     </th>
-            <th class="col-author">  Author    </th>
-            <th class="col-date">   Date       </th>
-          </tr>
-        </thead>
-        <tbody>
-          <c:choose>
-            <c:when test="${not empty postList}">
-              <c:forEach var="post" items="${postList}" varStatus="st">
-                <tr onclick="location.href='posts/${post.postId}'">
-                  <!-- 글번호 -->
-                  <td class="td-id col-id">${post.postId}</td>
+      <!-- ===================== 좌측 게시글 영역 ===================== -->
+      <section class="content-area">
 
-                  <!-- 카테고리 -->
-                  <td class="col-category">
-                    <span class="badge-category">
-                      <c:out value="${post.categoryName}" default="General" />
-                    </span>
-                  </td>
+          <!-- 상단 헤더 -->
+          <div class="section-header">
 
-                  <!-- 제목 -->
-                  <td class="td-title col-title">
-                    <c:out value="${post.title}" />
-                  </td>
+              <span class="section-title">
+                  게시글 목록
+              </span>
 
-                  <!-- 작성자 -->
-                  <td class="col-author">
-                    <div class="author-wrap">
-                      <div class="author-avatar">
-                        <%-- 닉네임 첫 글자를 아바타로 표시 --%>
-                        ${fn:substring(post.nickname, 0, 1)}
-                      </div>
-                      <span class="author-name">
-                        <c:out value="${post.nickname}" />
-                      </span>
-                    </div>
-                  </td>
+              <span class="section-count">
 
-                  <!-- 작성일 (LocalDateTime -> toString 또는 포맷된 String) -->
-                  <td class="td-date col-date">
-                    <%-- LocalDateTime의 경우 백엔드에서 String으로 포맷하거나 --%>
-                    <%-- substring으로 앞 10자리(날짜)만 표시합니다        --%>
-                    <c:choose>
-                      <c:when test="${not empty post.createdAt}">
-                        ${fn:substring(post.createdAt, 0, 10)}
+                  Total
+
+                  <c:choose>
+
+                      <c:when test="${not empty postList}">
+                          ${fn:length(postList)}
                       </c:when>
-                      <c:otherwise>-</c:otherwise>
-                    </c:choose>
-                  </td>
-                </tr>
-              </c:forEach>
-            </c:when>
 
-            <c:otherwise>
-              <!-- 게시글이 없을 때 -->
-              <tr>
-                <td colspan="5">
-                  <div class="empty-state">
-                    <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                    </svg>
-                    <p class="empty-state-text">등록된 게시글이 없습니다.</p>
+                      <c:otherwise>
+                          0
+                      </c:otherwise>
+
+                  </c:choose>
+
+                  posts
+
+              </span>
+
+          </div>
+
+          <!-- 게시판 -->
+          <div class="board-wrap">
+
+              <table>
+
+                  <!-- ===================== THEAD ===================== -->
+                  <thead>
+
+                  <tr>
+
+                      <th class="col-id">
+                          No.
+                      </th>
+
+                      <th class="col-category">
+                          Category
+                      </th>
+
+                      <th class="col-title">
+                          Title
+                      </th>
+
+                      <th class="col-author">
+                          Author
+                      </th>
+
+                      <th class="col-date">
+                          Date
+                      </th>
+
+                  </tr>
+
+                  </thead>
+
+                  <!-- ===================== TBODY ===================== -->
+                  <tbody>
+
+                  <c:choose>
+
+
+                      <c:when test="${not empty postList}">
+
+                          <c:forEach var="post"
+                                     items="${postList}"
+                                     varStatus="st">
+
+                              <tr onclick="location.href='/posts/${post.postId}'">
+
+
+                                  <td class="td-id col-id">
+                                      ${post.postId}
+                                  </td>
+
+
+                                  <td class="col-category">
+
+                                      <span class="badge-category">
+
+                                          <c:out value="${post.categoryName}"
+                                                 default="General"/>
+
+                                      </span>
+
+                                  </td>
+
+
+                                  <td class="td-title col-title">
+
+                                      <c:out value="${post.title}"/>
+
+                                  </td>
+
+
+                                  <td class="col-author">
+
+                                      <div class="author-wrap">
+
+                                          <div class="author-avatar">
+
+                                              ${fn:substring(post.nickname,0,1)}
+
+                                          </div>
+
+                                          <span class="author-name">
+
+                                              <c:out value="${post.nickname}"/>
+
+                                          </span>
+
+                                      </div>
+
+                                  </td>
+
+
+                                  <td class="td-date col-date">
+
+                                      <c:choose>
+
+                                          <c:when test="${not empty post.createdAt}">
+
+                                              ${fn:substring(post.createdAt,0,10)}
+
+                                          </c:when>
+
+                                          <c:otherwise>
+
+                                              -
+
+                                          </c:otherwise>
+
+                                      </c:choose>
+
+                                  </td>
+
+                              </tr>
+
+                          </c:forEach>
+
+                      </c:when>
+
+
+                      <c:otherwise>
+
+                          <tr>
+
+                              <td colspan="5">
+
+                                  <div class="empty-state">
+
+                                      <svg class="empty-state-icon"
+                                           viewBox="0 0 24 24"
+                                           fill="none"
+                                           stroke="currentColor"
+                                           stroke-width="1.5">
+
+                                          <path stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+
+                                      </svg>
+
+                                      <p class="empty-state-text">
+                                          등록된 게시글이 없습니다.
+                                      </p>
+
+                                  </div>
+
+                              </td>
+
+                          </tr>
+
+                      </c:otherwise>
+
+                  </c:choose>
+
+                  </tbody>
+
+              </table>
+
+          </div>
+
+      </section>
+
+      <!-- ===================== 우측 사이드 메뉴 ===================== -->
+      <aside class="side-menu">
+
+          <c:choose>
+
+              <c:when test="${not empty sessionScope.LOGIN_USER}">
+
+                  <div class="profile-box">
+
+                      <div class="profile-title">
+                          Welcome
+                      </div>
+
+                      <div class="profile-nickname">
+                          ${loginNickname}
+                      </div>
+
                   </div>
-                </td>
-              </tr>
-            </c:otherwise>
+
+                  <button onclick="location.href='/posts/write'"
+                          class="menu-btn">
+
+                      글 쓰기
+
+                  </button>
+
+                  <button onclick="location.href='/myposts'"
+                          class="menu-btn">
+
+                      작성글 관리
+
+                  </button>
+
+                  <form action="/users/logout"
+                        method="post">
+
+                      <button type="submit"
+                              class="menu-btn logout-btn">
+
+                          로그아웃
+
+                      </button>
+
+                  </form>
+
+              </c:when>
+
+              <c:otherwise>
+
+                  <button onclick="location.href='/users/login'"
+                          class="menu-btn">
+
+                      로그인
+
+                  </button>
+
+                  <button onclick="location.href='/users/join'"
+                          class="menu-btn">
+
+                      회원가입
+
+                  </button>
+
+              </c:otherwise>
+
           </c:choose>
-        </tbody>
-      </table>
-    </div>
+
+      </aside>
+
   </main>
 
   <!-- ===================== FOOTER ===================== -->

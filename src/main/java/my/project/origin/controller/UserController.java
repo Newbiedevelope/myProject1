@@ -30,20 +30,4 @@ public class UserController {
 
         return Map.of("available", !exists);
     }
-
-    @PostMapping("/login")
-    public String login(
-            LoginRequest request,
-            HttpSession session
-    ) {
-
-        User user = userService.login(
-                request.getUsername(),
-                request.getPassword()
-        );
-
-        session.setAttribute("LOGIN_USER", user.getId());
-
-        return "redirect:/posts";
-    }
 }

@@ -43,4 +43,11 @@ public class UserServiceImpl implements UserService{
 
         return user;
     }
+
+    @Override
+    public User findById(Long userId) {
+
+        return userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 회원"));
+    }
 }

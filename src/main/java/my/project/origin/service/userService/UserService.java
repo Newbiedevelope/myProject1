@@ -11,4 +11,6 @@ public interface UserService {
 
     // login 메서드
     User login(String username, String password);
+
+    User findById(Long userId);
 }

@@ -7,6 +7,8 @@ import my.project.origin.repository.catogoryRepository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -26,5 +28,10 @@ public class CategoryServiceImpl implements CategoryService{
 
         return categoryRepository.save(category).getId();
 
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
     }
 }
