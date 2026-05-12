@@ -232,7 +232,7 @@
                 <c:forEach var="category"
                            items="${categoryList}">
 
-                    <option value="${category.categoryId}">
+                    <option value="${category.id}">
                         ${category.name}
                     </option>
 

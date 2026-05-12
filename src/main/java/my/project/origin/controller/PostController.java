@@ -26,8 +26,8 @@ public class PostController {
 
     // 게시글 생성 컨트롤러
     @PostMapping
-    public PostCreateResponse createPost(@RequestBody PostCreateRequest request) {
-        Long postId = postService.createPost(request);
+    public PostCreateResponse createPost(@RequestBody PostCreateRequest request, HttpSession session) {
+        Long postId = postService.createPost(request, (Long)session.getAttribute("LOGIN_USER"));
         return new PostCreateResponse(postId);
     }
 
@@ -41,19 +41,6 @@ public class PostController {
     @GetMapping
     public List<PostListResponse> getPosts() {
         return postService.getPosts();
-    }
-
-    @GetMapping("/write")
-    public String writeForm(HttpSession session, Model model) {
-        Long loginUserId = (Long) session.getAttribute("LOGIN_USER");
-
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
-        model.addAttribute("categoryList", categoryService.getCategories());
-
-        return "posts/write";
     }
 
 }

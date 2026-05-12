@@ -11,5 +11,5 @@ public class PostSearchCondition {
     private String content;
     private String nickname;
     private String categoryName;
-
+    private Long userId;
 }

@@ -32,10 +32,11 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                     .leftJoin(post.category, category)
                     .fetchJoin() // N+1 방지 (카테고리)
                     .where(
-                            titleContains(condition.getTitle()),
-                            contentContains(condition.getContent()),
-                            nicknameEq(condition.getNickname()),
-                            categoryNameEq(condition.getCategoryName())
+                            titleContains(condition.getTitle())
+                            , contentContains(condition.getContent())
+                            , nicknameEq(condition.getNickname())
+                            , categoryNameEq(condition.getCategoryName())
+                            , userIdEq(condition.getUserId())
                     )
                     .fetch();
         }
@@ -62,6 +63,13 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         private BooleanExpression categoryNameEq(String categoryName) {
             return (categoryName != null && !categoryName.isBlank())
                     ? QCategory.category.name.eq(categoryName)
+                    : null;
+        }
+
+        private BooleanExpression userIdEq(Long userId) {
+
+            return userId != null
+                    ? QUser.user.id.eq(userId)
                     : null;
         }
 

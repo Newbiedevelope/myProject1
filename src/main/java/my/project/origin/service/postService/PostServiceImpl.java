@@ -41,10 +41,10 @@ public class PostServiceImpl implements PostService{
     }//close search()
 
     @Override
-    public Long createPost(PostCreateRequest request) {
+    public Long createPost(PostCreateRequest request, Long userId) {
 
         // 유저 조회
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         // 카테고리 조회

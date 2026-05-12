@@ -636,7 +636,7 @@
 
                   </button>
 
-                  <button onclick="location.href='/myposts'"
+                  <button onclick="location.href='/posts/myposts'"
                           class="menu-btn">
 
                       작성글 관리

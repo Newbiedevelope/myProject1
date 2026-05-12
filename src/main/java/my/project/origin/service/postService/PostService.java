@@ -13,7 +13,7 @@ public interface PostService {
     List<PostListResponse> search(PostSearchCondition condition);
 
     // 게시글 작성
-    Long createPost(PostCreateRequest request);
+    Long createPost(PostCreateRequest request, Long userId);
 
     // 다중 조회
     List<PostListResponse> getPosts();
