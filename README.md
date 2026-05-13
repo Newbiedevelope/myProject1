@@ -34,7 +34,7 @@ JPA를 활용한 객체 중심 설계 및 확장 가능한 구조를 목표로 �
 src/main/java/my/project/origin
  ├── domain
  │    ├── user
- │    ├── post
+ │    ├── board
  │    ├── comment
  │    └── category
  ├── repository

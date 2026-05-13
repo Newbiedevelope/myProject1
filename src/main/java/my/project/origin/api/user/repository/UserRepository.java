@@ -1,0 +1,14 @@
+package my.project.origin.api.user.repository;
+
+import my.project.origin.api.user.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+//@Repository JpaRepository 를 상속받았기 때문에 생략 가능
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByUsername(String username);
+
+    boolean existsByUsername(String username);
+}
